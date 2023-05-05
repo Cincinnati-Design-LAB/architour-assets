@@ -1,7 +1,43 @@
 ---
-export const prerender = true;
-
+// Disabling prerendering so we can just get all images on request.
+//
+// export const prerender = true;
+//
 import Layout from "@layouts/Layout.astro";
+
+const randomNumber = Math.random() * 100;
 ---
 
-<Layout title="Stackbit Modal">HELLO WORLD!</Layout>
+<Layout title="Stackbit Modal">
+  <main class="p-4">
+    <p class="mb-4">Random: {randomNumber}</p>
+
+    <h2>Images</h2>
+    <div class="grid grid-cols-4 gap-2" data-clearyst-images>
+      <div>IMAGES GO HERE</div>
+      <img
+        src="https://www.clearyst.com/_next/image?url=%2Fimages%2Fsolutions-green.jpg&w=2048&q=75"
+        class="hover:cursor-pointer"
+      />
+      <img
+        src="https://www.clearyst.com/_next/image?url=%2Fimages%2Fpeople-stock-01.jpeg&w=2048&q=75"
+        class="hover:cursor-pointer"
+      />
+    </div>
+  </main>
+</Layout>
+
+<script>
+  const images = document.querySelectorAll("[data-clearyst-images] img");
+
+  // Listen for clicks on images and send `postMessage`
+  images.forEach((image) => {
+    image.addEventListener("click", function () {
+      console.log("Clicked image", this.src);
+      window.postMessage({
+        type: "clearyst-cloudinary-assets",
+        imageUrl: this.src,
+      });
+    });
+  });
+</script>
