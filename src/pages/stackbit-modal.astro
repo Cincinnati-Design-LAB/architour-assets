@@ -37,10 +37,12 @@ const images = [
   images.forEach((image) => {
     image.addEventListener("click", function () {
       console.log("Clicked image", this.src);
-      window.postMessage({
-        type: "clearyst-cloudinary-assets",
-        imageUrl: this.src,
-      });
+      if (window.parent) {
+        window.parent.postMessage({
+          type: "clearyst-cloudinary-assets",
+          imageUrl: this.src,
+        });
+      }
     });
   });
 </script>
