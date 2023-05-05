@@ -38,10 +38,13 @@ const images = [
     image.addEventListener("click", function () {
       console.log("Clicked image", this.src);
       if (window.parent) {
-        window.parent.postMessage({
-          type: "clearyst-cloudinary-assets",
-          imageUrl: this.src,
-        });
+        window.parent.postMessage(
+          {
+            type: "clearyst-cloudinary-assets",
+            imageUrl: this.src,
+          },
+          "*"
+        );
       }
     });
   });
