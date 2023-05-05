@@ -6,6 +6,12 @@
 import Layout from "@layouts/Layout.astro";
 
 const randomNumber = Math.random() * 100;
+
+const images = [
+  "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2352&q=80",
+  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
+  "https://images.unsplash.com/photo-1477346611705-65d1883cee1e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
+];
 ---
 
 <Layout title="Stackbit Modal">
@@ -15,14 +21,11 @@ const randomNumber = Math.random() * 100;
     <h2>Images</h2>
     <div class="grid grid-cols-4 gap-2" data-clearyst-images>
       <div>IMAGES GO HERE</div>
-      <img
-        src="https://www.clearyst.com/_next/image?url=%2Fimages%2Fsolutions-green.jpg&w=2048&q=75"
-        class="hover:cursor-pointer"
-      />
-      <img
-        src="https://www.clearyst.com/_next/image?url=%2Fimages%2Fpeople-stock-01.jpeg&w=2048&q=75"
-        class="hover:cursor-pointer"
-      />
+      {
+        images.map((images) => {
+          return <img src={images} class="hover:cursor-pointer" />;
+        })
+      }
     </div>
   </main>
 </Layout>
