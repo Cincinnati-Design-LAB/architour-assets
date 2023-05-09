@@ -4,14 +4,18 @@
 // export const prerender = true;
 //
 import Layout from "@layouts/Layout.astro";
+import { getImages } from "@content/utils/get-images";
+import ImageGrid from "@components/ImageGrid.astro";
+
+const images = await getImages();
 
 const randomNumber = Math.random() * 100;
 
-const images = [
-  "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2352&q=80",
-  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
-  "https://images.unsplash.com/photo-1477346611705-65d1883cee1e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
-];
+// const images = [
+//   "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2352&q=80",
+//   "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
+//   "https://images.unsplash.com/photo-1477346611705-65d1883cee1e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
+// ];
 ---
 
 <Layout title="Stackbit Modal">
@@ -19,33 +23,6 @@ const images = [
     <p class="mb-4">Random: {randomNumber}</p>
 
     <h2>Images</h2>
-    <div class="grid grid-cols-4 gap-2" data-clearyst-images>
-      <div>IMAGES GO HERE</div>
-      {
-        images.map((images) => {
-          return <img src={images} class="hover:cursor-pointer" />;
-        })
-      }
-    </div>
+    <ImageGrid images={images} />
   </main>
 </Layout>
-
-<script>
-  const images = document.querySelectorAll("[data-clearyst-images] img");
-
-  // Listen for clicks on images and send `postMessage`
-  images.forEach((image) => {
-    image.addEventListener("click", function () {
-      console.log("Clicked image", this.src);
-      if (window.parent) {
-        window.parent.postMessage(
-          {
-            type: "clearyst-cloudinary-assets",
-            imageUrl: this.src,
-          },
-          "*"
-        );
-      }
-    });
-  });
-</script>
