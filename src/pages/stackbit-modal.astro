@@ -1,28 +1,47 @@
 ---
-// Disabling prerendering so we can just get all images on request.
-//
-// export const prerender = true;
-//
 import Layout from "@layouts/Layout.astro";
-import { getImages } from "@content/utils/get-images";
-import ImageGrid from "@components/ImageGrid.astro";
+import { getPaginatedImages } from "@content/utils/get-images";
 
-const images = await getImages();
+const imagePages = await getPaginatedImages();
 
-const randomNumber = Math.random() * 100;
-
-// const images = [
-//   "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2352&q=80",
-//   "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
-//   "https://images.unsplash.com/photo-1477346611705-65d1883cee1e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
-// ];
+const images = imagePages[0].images;
 ---
 
 <Layout title="Stackbit Modal">
   <main class="p-4">
-    <p class="mb-4">Random: {randomNumber}</p>
-
-    <h2>Images</h2>
-    <ImageGrid images={images} />
+    <div class="grid grid-cols-4 gap-4" data-clearyst-images>
+      {
+        images.map((image) => {
+          return (
+            <div class="overflow-hidden hover:cursor-pointer border-4 border-transparent hover:border-blue-300 transition-all duration-300">
+              <img
+                src={image.thumbUrl}
+                class="width-full transition-all duration-300 hover:scale-110"
+              />
+            </div>
+          );
+        })
+      }
+    </div>
   </main>
 </Layout>
+
+<script>
+  const images = document.querySelectorAll("[data-clearyst-images] img");
+
+  // Listen for clicks on images and send `postMessage`
+  images.forEach((image) => {
+    image.addEventListener("click", function () {
+      console.log("Clicked image", this.src);
+      if (window.parent) {
+        window.parent.postMessage(
+          {
+            type: "clearyst-cloudinary-assets",
+            imageUrl: this.src,
+          },
+          "*"
+        );
+      }
+    });
+  });
+</script>
