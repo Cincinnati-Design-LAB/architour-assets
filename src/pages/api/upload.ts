@@ -1,8 +1,10 @@
 import type { APIRoute } from "astro";
 
-export const get: APIRoute = async ({ request }) => {
-  const url = new URL(request.url);
-  const params = new URLSearchParams(url.search);
+export const post: APIRoute = async ({ request }) => {
+  // const url = new URL(request.url);
+  // const params = new URLSearchParams(url.search);
+
+  console.log({ request });
 
   // const id = params.id;
   // const product = await getProduct(id);
@@ -14,9 +16,10 @@ export const get: APIRoute = async ({ request }) => {
   //   });
   // }
 
-  const randomNumber = Math.random() * 100;
+  // const randomNumber = Math.random() * 100;
 
-  const response = { randomNumber, q: params.get("q") };
+  // const response = { randomNumber, q: params.get("q") };
+  const response = { request };
 
   return new Response(JSON.stringify(response), {
     status: 200,
