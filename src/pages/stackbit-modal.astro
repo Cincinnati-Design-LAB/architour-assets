@@ -26,15 +26,16 @@ const images = imagePages[0].images;
 
     <div>
       <p>Add new file</p>
-      <input type="file" id="image-file" />
-      <button id="upload-trigger">Upload</button>
+      <input type="file" id="image-file" class="hidden" />
+      <button
+        id="upload-trigger"
+        class="inline-block py-2 px-6 bg-blue-500 text-white">Upload</button
+      >
     </div>
   </main>
 </Layout>
 
 <script>
-  import { log } from "astro/dist/core/logger/core";
-
   const images = document.querySelectorAll("[data-clearyst-images] img");
 
   // Listen for clicks on images and send `postMessage`
@@ -53,31 +54,61 @@ const images = imagePages[0].images;
     });
   });
 
-  // Upload file control
-  let uploadTrigger = document.getElementById("upload-trigger");
-  uploadTrigger.addEventListener("click", async function () {
-    // console.log("Clicked upload");
-    // if (window.parent) {
-    //   window.parent.postMessage(
-    //     {
-    //       type: "clearyst-cloudinary-assets",
-    //       imageUrl: this.src,
-    //     },
-    //     "*"
-    //   );
-    // }
+  const imageFileEl: HTMLInputElement = document.getElementById(
+    "image-file"
+  ) as HTMLInputElement;
+  imageFileEl.addEventListener("change", async function () {
     let imageFile = (document.getElementById("image-file") as HTMLInputElement)
       .files[0];
     // console.log(imageFile);
 
     if (!imageFile) return;
 
-    let formData = new FormData();
-    formData.append("imageUrl", imageFile);
-    const response = await fetch("/api/upload", {
-      method: "POST",
-      body: formData,
+    const fileReader = new FileReader();
+    console.log(imageFile);
+
+    fileReader.addEventListener("load", async function (event) {
+      const base64Image = event.target.result;
+
+      if (typeof base64Image !== "string") {
+        console.error("base64Image is not a string");
+        return;
+      }
+
+      let formData = new FormData();
+      formData.append("imageUrl", base64Image);
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const response = await res.json();
+
+      if (!response.success) {
+        console.error("Something went wrong uploading the image");
+        return;
+      }
+
+      if (!response.public_id) {
+        console.error("No public_id returned from upload");
+        return;
+      }
+
+      console.log("Image uploaded", response.public_id);
+      if (window.parent) {
+        window.parent.postMessage(
+          { type: "clearyst-cloudinary-assets", imageUrl: response.public_id },
+          "*"
+        );
+      }
     });
-    console.log({ response });
+
+    fileReader.readAsDataURL(imageFile);
+  });
+
+  // Upload file control
+  let uploadTrigger = document.getElementById("upload-trigger");
+  uploadTrigger.addEventListener("click", async function () {
+    imageFileEl.click();
   });
 </script>
