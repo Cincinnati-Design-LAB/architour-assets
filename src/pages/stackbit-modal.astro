@@ -4,7 +4,8 @@ import { getPaginatedImages } from "@content/utils/get-images";
 
 const imagePages = await getPaginatedImages();
 
-const images = imagePages[0].images;
+// const images = imagePages[0].images;
+const images = imagePages.flatMap((page) => page.images);
 ---
 
 <Layout title="Stackbit Modal">
