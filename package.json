@@ -8,7 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "iframe-test-server": "http-server ./test/iframe-referrer -p 3002"
+    "iframe-test-server": "http-server ./test/iframe-referer -p 3002"
   },
   "dependencies": {
     "@astrojs/netlify": "^2.2.2",

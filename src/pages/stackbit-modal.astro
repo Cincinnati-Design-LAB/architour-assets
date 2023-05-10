@@ -5,7 +5,7 @@ import { getPaginatedImages } from "@content/utils/get-images";
 const referer = Astro.request.headers.get("referer");
 
 if (
-  import.meta.env.SKIP_REFERER_CHECK !== "true" &&
+  import.meta.env.SKIP_REFERER_CHECK.toString() !== "true" &&
   (!referer || !referer.startsWith("https://app.stackbit.com/"))
 ) {
   console.error("Invalid referer", referer);
@@ -17,6 +17,8 @@ if (
 // console.log(Astro.request.);
 
 const imagePages = await getPaginatedImages();
+
+const uploadKey = import.meta.env.UPLOAD_SECRET_KEY.toString();
 
 // const images = imagePages[0].images;
 const images = imagePages.flatMap((page) => page.images);
@@ -51,7 +53,7 @@ const images = imagePages.flatMap((page) => page.images);
   </main>
 </Layout>
 
-<script>
+<script define:vars={{ uploadKey }}>
   const images = document.querySelectorAll("[data-clearyst-images] img");
 
   // Listen for clicks on images and send `postMessage`
@@ -68,12 +70,9 @@ const images = imagePages.flatMap((page) => page.images);
     });
   });
 
-  const imageFileEl: HTMLInputElement = document.getElementById(
-    "image-file"
-  ) as HTMLInputElement;
+  const imageFileEl = document.getElementById("image-file");
   imageFileEl.addEventListener("change", async function () {
-    let imageFile = (document.getElementById("image-file") as HTMLInputElement)
-      .files[0];
+    let imageFile = document.getElementById("image-file").files[0];
     // console.log(imageFile);
 
     if (!imageFile) return;
@@ -90,6 +89,7 @@ const images = imagePages.flatMap((page) => page.images);
       }
 
       let formData = new FormData();
+      formData.append("__key__", uploadKey);
       formData.append("imageUrl", base64Image);
       const res = await fetch("/api/upload", {
         method: "POST",

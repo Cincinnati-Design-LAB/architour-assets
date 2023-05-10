@@ -10,6 +10,14 @@ import type { APIRoute } from "astro";
 // }
 
 export const post: APIRoute = async ({ request }) => {
+  if (!import.meta.env.UPLOAD_SECRET_KEY) {
+    console.error("No upload secret key");
+    return new Response(null, {
+      status: 500,
+      statusText: "Internal server error",
+    });
+  }
+
   // const url = new URL(request.url);
   // const params = new URLSearchParams(url.search);
 
@@ -17,6 +25,15 @@ export const post: APIRoute = async ({ request }) => {
   // console.log(request.body);
   const body = await request.formData();
   const image = body.get("imageUrl");
+  const key = body.get("__key__");
+
+  if (key !== import.meta.env.UPLOAD_SECRET_KEY) {
+    console.error("Invalid key", key);
+    return new Response(null, {
+      status: 401,
+      statusText: "Unauthorized",
+    });
+  }
 
   if (!image) {
     console.error("No image");
