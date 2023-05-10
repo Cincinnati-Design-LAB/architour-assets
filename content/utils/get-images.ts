@@ -20,7 +20,7 @@ function transformImage(image: any): CloudinaryImage {
   return {
     publicId: image.public_id,
     thumbUrl: cloudinary.url(image.public_id, {
-      transformation: "stackbit-modal-thumb",
+      transformation: "stackbit_modal_thumb",
       secure: true,
     }),
   };
