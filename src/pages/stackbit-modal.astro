@@ -21,8 +21,8 @@ const imagePages = await getPaginatedImages();
 
 const uploadKey = import.meta.env.UPLOAD_SECRET_KEY.toString();
 
-const images = imagePages[0].images;
-// const images = imagePages.flatMap((page) => page.images);
+// const images = imagePages[0].images;
+const images = imagePages.flatMap((page) => page.images);
 
 // Note: Using underscores to pinpoint selectors being used by client-side JS.
 // Probably a better way to do this.
