@@ -2,9 +2,13 @@ import { cloudinary } from "./client";
 
 export type CloudinaryImage = {
   /** Cloudinary ID value */
-  publicId: string;
-  /** Transformed URL for square thumbnail to use in Stackbit modal */
-  thumbUrl: string;
+  public_id: string;
+  /** Full (secure) URL to image */
+  url: string;
+  /** Original file width */
+  width: number;
+  /** Original file height */
+  height: number;
 };
 
 type CloudinaryImagePage = {
@@ -17,13 +21,8 @@ type CloudinaryImagePage = {
 const PAGE_SIZE = 4;
 
 function transformImage(image: any): CloudinaryImage {
-  return {
-    publicId: image.public_id,
-    thumbUrl: cloudinary.url(image.public_id, {
-      transformation: "stackbit_modal_thumb",
-      secure: true,
-    }),
-  };
+  const { width, height, public_id, secure_url } = image;
+  return { public_id, url: secure_url, width, height };
 }
 
 export async function getPaginatedImages(

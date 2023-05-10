@@ -13,6 +13,7 @@
   "dependencies": {
     "@astrojs/netlify": "^2.2.2",
     "@astrojs/tailwind": "^3.1.2",
+    "@unpic/astro": "^0.0.16",
     "astro": "^2.3.3",
     "cloudinary": "^1.36.4",
     "tailwindcss": "^3.0.24"

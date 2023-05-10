@@ -9,6 +9,7 @@ TODO:
 - [ ] Better errors
 - [ ] Remove comments
 - [ ] Documentation
+- [ ] Add comments to functions
 
 ISSUES:
 
