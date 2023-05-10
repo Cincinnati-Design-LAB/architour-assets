@@ -2,6 +2,20 @@
 import Layout from "@layouts/Layout.astro";
 import { getPaginatedImages } from "@content/utils/get-images";
 
+const referer = Astro.request.headers.get("referer");
+
+if (
+  import.meta.env.SKIP_REFERER_CHECK !== "true" &&
+  (!referer || !referer.startsWith("https://app.stackbit.com/"))
+) {
+  console.error("Invalid referer", referer);
+  return new Response(null, {
+    status: 404,
+    statusText: "Not found",
+  });
+}
+// console.log(Astro.request.);
+
 const imagePages = await getPaginatedImages();
 
 // const images = imagePages[0].images;
