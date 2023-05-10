@@ -10,6 +10,8 @@ TODO:
 - [ ] Remove comments
 - [ ] Documentation
 - [ ] Add comments to functions
+- [ ] Loading animation??
+- [ ] Tighten up types -> should be using shared types throughout
 
 ISSUES:
 

@@ -88,7 +88,8 @@ export const post: APIRoute = async ({ request }) => {
 
   // console.log(cloudinaryResponse);
 
-  const response = { success: true, public_id: cloudinaryResponse.public_id };
+  const { public_id, width, height, secure_url } = cloudinaryResponse;
+  const response = { success: true, public_id, width, height, url: secure_url };
 
   return new Response(JSON.stringify(response), {
     status: 200,

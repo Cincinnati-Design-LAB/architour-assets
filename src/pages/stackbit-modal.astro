@@ -71,7 +71,7 @@ const images = imagePages.flatMap((page) => page.images);
       const height = parseInt(image.getAttribute("data-height"));
       const url = image.getAttribute("data-url");
 
-      console.log("Clicked image", public_id);
+      console.log("Chose image", public_id);
       if (window.parent) {
         window.parent.postMessage(
           { type: "clearyst-cloudinary-assets", public_id, width, height, url },
@@ -123,10 +123,11 @@ const images = imagePages.flatMap((page) => page.images);
         return;
       }
 
-      console.log("Image uploaded", response.public_id);
+      const { public_id, width, height, url } = response;
+      console.log("Image uploaded", public_id);
       if (window.parent) {
         window.parent.postMessage(
-          { type: "clearyst-cloudinary-assets", public_id: response.public_id },
+          { type: "clearyst-cloudinary-assets", public_id, width, height, url },
           "*"
         );
       }
