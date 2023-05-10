@@ -16,6 +16,7 @@ const images = imagePages[0].images;
             <div class="overflow-hidden hover:cursor-pointer border-4 border-transparent hover:border-blue-300 transition-all duration-300">
               <img
                 src={image.thumbUrl}
+                data-public-id={image.publicId}
                 class="width-full transition-all duration-300 hover:scale-110"
               />
             </div>
@@ -41,13 +42,11 @@ const images = imagePages[0].images;
   // Listen for clicks on images and send `postMessage`
   images.forEach((image) => {
     image.addEventListener("click", function () {
-      console.log("Clicked image", this.src);
+      const id = image.getAttribute("data-public-id");
+      console.log("Clicked image", id);
       if (window.parent) {
         window.parent.postMessage(
-          {
-            type: "clearyst-cloudinary-assets",
-            imageUrl: this.src,
-          },
+          { type: "clearyst-cloudinary-assets", public_id: id },
           "*"
         );
       }
@@ -97,7 +96,7 @@ const images = imagePages[0].images;
       console.log("Image uploaded", response.public_id);
       if (window.parent) {
         window.parent.postMessage(
-          { type: "clearyst-cloudinary-assets", imageUrl: response.public_id },
+          { type: "clearyst-cloudinary-assets", public_id: response.public_id },
           "*"
         );
       }
