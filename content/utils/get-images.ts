@@ -47,33 +47,3 @@ export async function getPaginatedImages(
 
   return pages;
 }
-
-// async function getPaginatedImages(): Promise<CloudinaryImagePage[]> {
-// const pages: CloudinaryImagePage[] = [];
-
-//   let response = await getImagePage();
-
-//   // Run again if next_cursor. Otherwise, return the pages.
-//   if (response.next_cursor) {
-//     return getImagePage(pages, response.next_cursor);
-//   }
-
-//   return pages;
-
-//   // return cloudinaryImages.map(transformImage);
-// }
-
-// async function paginateImages(): Promise<CloudinaryImagePage[]> {
-//   return await getImagePage([]);
-
-// }
-
-// export async function getImages(): Promise<CloudinaryImage[]> {
-//   const paginatedImages = await getPaginatedImages([]);
-
-//   // console.log(cloudinaryImages);
-//   // const images = cloudinaryImages.resources.map(
-//   //   transformImage
-//   // ) as CloudinaryImage[];
-//   // return images;
-// }
