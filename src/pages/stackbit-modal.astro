@@ -5,7 +5,7 @@ import { getPaginatedImages } from "@content/utils/get-images";
 const referer = Astro.request.headers.get("referer");
 
 if (
-  import.meta.env.SKIP_REFERER_CHECK.toString() !== "true" &&
+  (import.meta.env.SKIP_REFERER_CHECK || "").toString() !== "true" &&
   (!referer || !referer.startsWith("https://app.stackbit.com/"))
 ) {
   console.error("Invalid referer", referer);
