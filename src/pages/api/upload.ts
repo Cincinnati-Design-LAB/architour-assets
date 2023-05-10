@@ -18,6 +18,19 @@ export const post: APIRoute = async ({ request }) => {
     });
   }
 
+  const referer = request.headers.get("referer");
+  if (
+    !referer ||
+    !import.meta.env.ALLOWED_UPLOAD_ORIGIN ||
+    referer !== import.meta.env.ALLOWED_UPLOAD_ORIGIN
+  ) {
+    console.error("Invalid referer", referer);
+    return new Response(null, {
+      status: 401,
+      statusText: "Unauthorized",
+    });
+  }
+
   // const url = new URL(request.url);
   // const params = new URLSearchParams(url.search);
 
