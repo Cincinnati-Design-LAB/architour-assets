@@ -1,5 +1,6 @@
 import { cloudinary } from "@content/utils/client";
 import type { APIRoute } from "astro";
+import { UploadApiOptions } from "cloudinary";
 
 // async function blobToBase64(blob): Promise<string | ArrayBuffer> {
 //   return new Promise((resolve, _) => {
@@ -38,6 +39,7 @@ export const post: APIRoute = async ({ request }) => {
   // console.log(request.body);
   const body = await request.formData();
   const image = body.get("imageUrl");
+  const filename = body.get("imageFilename");
   const key = body.get("__key__");
 
   if (key !== import.meta.env.UPLOAD_SECRET_KEY) {
@@ -73,10 +75,16 @@ export const post: APIRoute = async ({ request }) => {
 
   // console.log(buffer, buffer.toString("base64"));
 
-  // const base64Image = await blobToBase64(image);
-  const cloudinaryResponse = await cloudinary.uploader.upload(image, {
+  const options: UploadApiOptions = {
     use_filename: true,
-  });
+  };
+  if (filename) {
+    options.filename_override = filename as string;
+    options.unique_filename = true;
+  }
+
+  // const base64Image = await blobToBase64(image);
+  const cloudinaryResponse = await cloudinary.uploader.upload(image, options);
 
   // console.log(cloudinaryResponse);
 

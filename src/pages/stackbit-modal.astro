@@ -78,10 +78,13 @@ const images = imagePages.flatMap((page) => page.images);
     if (!imageFile) return;
 
     const fileReader = new FileReader();
-    console.log(imageFile);
+    // console.log(imageFile);
 
     fileReader.addEventListener("load", async function (event) {
       const base64Image = event.target.result;
+
+      // console.log({ base64Image, imageFile });
+      // return false;
 
       if (typeof base64Image !== "string") {
         console.error("base64Image is not a string");
@@ -91,6 +94,7 @@ const images = imagePages.flatMap((page) => page.images);
       let formData = new FormData();
       formData.append("__key__", uploadKey);
       formData.append("imageUrl", base64Image);
+      formData.append("imageFilename", imageFile.name);
       const res = await fetch("/api/upload", {
         method: "POST",
         body: formData,
