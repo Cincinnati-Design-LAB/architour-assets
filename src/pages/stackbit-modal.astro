@@ -93,6 +93,7 @@ const images = imagePages.flatMap((page) => page.images);
 
     fileReader.addEventListener("load", async function (event) {
       const base64Image = event.target.result;
+      console.log(base64Image);
 
       // console.log({ base64Image, imageFile });
       // return false;
