@@ -1,4 +1,5 @@
-import { v2 as cloudinary } from "cloudinary";
+import { v2 as cloudinary } from 'cloudinary';
+import { IMAGE_PAGE_SIZE } from './constants';
 
 /* ----- Cloudinary Client ----- */
 
@@ -30,31 +31,37 @@ type CloudinaryImagePage = {
   images: CloudinaryImage[];
 };
 
-const PAGE_SIZE = 4;
-
 function transformImage(image: any): CloudinaryImage {
   const { width, height, public_id, secure_url } = image;
   return { public_id, url: secure_url, width, height };
 }
 
 export async function getPaginatedImages(
+  options: { folder?: string } = {},
   pages: CloudinaryImagePage[] = [],
-  next_cursor?: string
+  next_cursor?: string,
 ): Promise<CloudinaryImagePage[]> {
-  const response = await cloudinary.api.resources({
-    resource_type: "image",
-    max_results: PAGE_SIZE,
-    next_cursor,
-  });
+  try {
+    const response = await cloudinary.api.resources({
+      resource_type: 'image',
+      max_results: IMAGE_PAGE_SIZE,
+      next_cursor,
+      prefix: options?.folder ? `${options.folder}/` : undefined,
+      type: 'upload',
+    });
 
-  pages.push({
-    images: response.resources.map(transformImage),
-    pageNumber: pages.length + 1,
-  });
+    pages.push({
+      images: response.resources.map(transformImage),
+      pageNumber: pages.length + 1,
+    });
 
-  if (response.next_cursor) {
-    return getPaginatedImages(pages, response.next_cursor);
+    if (response.next_cursor) {
+      return getPaginatedImages(options, pages, response.next_cursor);
+    }
+
+    return pages;
+  } catch (error) {
+    console.log('ERROR:', error);
+    return [];
   }
-
-  return pages;
 }
