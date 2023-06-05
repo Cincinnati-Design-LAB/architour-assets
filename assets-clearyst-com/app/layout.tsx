@@ -1,23 +1,19 @@
-import "./globals.css";
-import { getProviders } from "next-auth/react";
-import { authOptions } from "@/app/auth/[...nextauth]/route";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
+import { authOptions } from '@/app/auth/[...nextauth]/route';
+import { ALLOWED_USER_EMAILS } from '@/utils/constants';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
+import './globals.css';
 
 export const metadata = {
-  title: "Clearyst Cloudinary Assets",
+  title: 'Clearyst Cloudinary Assets',
 };
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   // const providers = await getProviders();
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    redirect("/auth/signin");
+    redirect('/auth/signin');
     // return (
     //   <>
     //     Not signed in <br />
@@ -26,7 +22,14 @@ export default async function RootLayout({
     // );
   }
 
-  console.log({ session });
+  // console.log({ session });
+  if (!session?.user?.email || !ALLOWED_USER_EMAILS.includes(session?.user?.email)) {
+    return (
+      <html lang="en">
+        <body>Access denied</body>
+      </html>
+    );
+  }
 
   return (
     <html lang="en">
