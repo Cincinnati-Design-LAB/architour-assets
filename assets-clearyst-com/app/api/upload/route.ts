@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'File blob is required.' }, { status: 400 });
     }
 
-    console.log(file);
+    // console.log(file);
     const buffer = Buffer.from(await file.arrayBuffer());
     const image = await uploadFile(buffer);
 
@@ -34,8 +34,6 @@ export async function POST(request: NextRequest) {
     // redirect('/');
   } catch (error: any) {
     console.log('ERROR:', error);
-    return NextResponse.json({ error }, { status: 500 });
+    return NextResponse.json({ error: error?.message || error }, { status: 500 });
   }
-
-  // return NextResponse.redirect(`${process.env.ROOT_URL}/stackbit-modal`, 302);
 }

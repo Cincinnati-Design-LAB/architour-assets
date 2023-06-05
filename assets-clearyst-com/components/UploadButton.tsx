@@ -1,29 +1,34 @@
 'use client';
 
 import classNames from 'classnames';
-import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useRef, useState } from 'react';
 
 export const UploadButton = () => {
-  const formRef = useRef<HTMLFormElement>(null);
+  const [showForm, setShowForm] = useState(false);
+
+  return (
+    <>
+      <button
+        className={classNames('inline-block px-6 py-2 text-white bg-blue-500')}
+        onClick={() => setShowForm(true)}
+      >
+        Upload New Image
+      </button>
+      {showForm && <UploadForm />}
+    </>
+  );
+};
+
+/* ----- Upload Form ----- */
+
+const UploadForm: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [uploadReady, setUploadReady] = useState(false);
+  const router = useRouter();
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!fileInputRef.current) {
-      console.error('Could not find file input');
-      return;
-    }
-    fileInputRef.current.click();
-  };
-
-  const handleSubmit = async () => {
-    console.log('Submitting form ...');
-    // if (!formRef.current) {
-    //   console.error('Could not find form');
-    //   return;
-    // }
-    // formRef.current.submit();
+    console.log('Uploading image ...');
 
     const file = fileInputRef.current?.files ? fileInputRef.current?.files[0] : undefined;
     if (!file) {
@@ -40,48 +45,23 @@ export const UploadButton = () => {
     });
 
     if (!res.ok) {
-      console.error('something went wrong, check your console.');
+      const error = await res.json();
+      console.error('[UPLOAD ERROR]', error.error);
+      alert('Something went wrong, check your console.');
       return;
     }
 
-    const data = await res.json();
+    // const data = await res.json();
+    // console.log({ data });
 
-    console.log({ data });
+    router.refresh();
+    if (fileInputRef.current?.value) fileInputRef.current.value = '';
   };
 
-  useEffect(() => {
-    const checkIfJsReady = () => {
-      if (typeof window === 'undefined') {
-        setTimeout(checkIfJsReady, 100);
-        return;
-      }
-      setUploadReady(true);
-    };
-
-    checkIfJsReady();
-  }, []);
-
   return (
-    <>
-      <form action="/api/upload" method="POST" ref={formRef}>
-        <input
-          type="file"
-          name="file"
-          id="upload-image-file"
-          ref={fileInputRef}
-          onChange={handleSubmit}
-          className="hidden"
-        />
-      </form>
-      <button
-        id="_upload-trigger"
-        className={classNames('inline-block px-6 py-2 text-white bg-blue-500', {
-          hidden: !uploadReady,
-        })}
-        onClick={handleClick}
-      >
-        Upload New Image
-      </button>
-    </>
+    <form action="/api/upload" method="POST" onSubmit={handleSubmit}>
+      <input type="file" name="file" id="upload-image-file" ref={fileInputRef} />
+      <input type="submit" value="Upload Files" />
+    </form>
   );
 };
