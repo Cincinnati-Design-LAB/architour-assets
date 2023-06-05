@@ -4,12 +4,19 @@ import streamifier from 'streamifier';
 
 // const uploadFile = util.promisify(cloudinary.uploader.upload_stream);
 
-async function uploadFile(buffer: Buffer) {
+type UploadOptions = {
+  folder?: string;
+};
+
+async function uploadFile(buffer: Buffer, options: UploadOptions = {}) {
   return new Promise((resolve, reject) => {
-    let uploadStream = cloudinary.uploader.upload_stream({ folder: 'foo' }, (error, result) => {
-      if (error) reject(error);
-      resolve(result);
-    });
+    let uploadStream = cloudinary.uploader.upload_stream(
+      { folder: options.folder },
+      (error, result) => {
+        if (error) reject(error);
+        resolve(result);
+      },
+    );
 
     streamifier.createReadStream(buffer).pipe(uploadStream);
   });
@@ -25,9 +32,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'File blob is required.' }, { status: 400 });
     }
 
+    const folder = formData.get('folder') as string | null;
+
     // console.log(file);
     const buffer = Buffer.from(await file.arrayBuffer());
-    const image = await uploadFile(buffer);
+    const image = await uploadFile(buffer, { folder: folder || undefined });
 
     return NextResponse.json({ image });
 

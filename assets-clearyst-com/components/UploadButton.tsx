@@ -4,7 +4,11 @@ import classNames from 'classnames';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
-export const UploadButton = () => {
+type Props = {
+  folder?: string;
+};
+
+export const UploadButton = (props: Props) => {
   const [showForm, setShowForm] = useState(false);
 
   return (
@@ -15,14 +19,14 @@ export const UploadButton = () => {
       >
         Upload New Image
       </button>
-      {showForm && <UploadForm />}
+      {showForm && <UploadForm {...props} />}
     </>
   );
 };
 
 /* ----- Upload Form ----- */
 
-const UploadForm: React.FC = () => {
+const UploadForm: React.FC<Props> = (props) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
@@ -38,6 +42,7 @@ const UploadForm: React.FC = () => {
 
     const formData = new FormData();
     formData.append('file', file);
+    if (props.folder) formData.append('folder', props.folder);
 
     const res = await fetch('/api/upload', {
       method: 'POST',
