@@ -17,12 +17,36 @@ export const UploadButton = () => {
     fileInputRef.current.click();
   };
 
-  const handleSubmit = () => {
-    if (!formRef.current) {
-      console.error('Could not find form');
+  const handleSubmit = async () => {
+    console.log('Submitting form ...');
+    // if (!formRef.current) {
+    //   console.error('Could not find form');
+    //   return;
+    // }
+    // formRef.current.submit();
+
+    const file = fileInputRef.current?.files ? fileInputRef.current?.files[0] : undefined;
+    if (!file) {
+      console.error('File not found');
       return;
     }
-    formRef.current.submit();
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const res = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!res.ok) {
+      console.error('something went wrong, check your console.');
+      return;
+    }
+
+    const data = await res.json();
+
+    console.log({ data });
   };
 
   useEffect(() => {
@@ -42,9 +66,9 @@ export const UploadButton = () => {
       <form action="/api/upload" method="POST" ref={formRef}>
         <input
           type="file"
+          name="file"
           id="upload-image-file"
           ref={fileInputRef}
-          multiple={true}
           onChange={handleSubmit}
           className="hidden"
         />
