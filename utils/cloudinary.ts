@@ -1,7 +1,9 @@
-import { v2 as cloudinary } from 'cloudinary';
+import Cloudinary from 'cloudinary';
 import { IMAGE_PAGE_SIZE } from './constants';
 
 /* ----- Cloudinary Client ----- */
+
+const cloudinary = Cloudinary.v2;
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
