@@ -2,14 +2,14 @@ import { notFound } from 'next/navigation';
 
 type Props = {
   children: React.ReactNode;
-  params: { 'modal-secret': string };
+  params: { token: string };
 };
 
 export default async function ModalLayout(props: Props) {
   if (
-    !process.env.UPLOAD_ACCESS_TOKEN ||
-    !process.env.UPLOAD_ACCESS_TOKEN.length ||
-    props.params['modal-secret'] !== process.env.UPLOAD_ACCESS_TOKEN
+    !process.env.IMAGES_ACCESS_TOKEN ||
+    !process.env.IMAGES_ACCESS_TOKEN.length ||
+    props.params.token !== process.env.IMAGES_ACCESS_TOKEN
   ) {
     return notFound();
   }

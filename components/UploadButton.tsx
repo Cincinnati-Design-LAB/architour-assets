@@ -6,6 +6,8 @@ import { useRef, useState } from 'react';
 
 type Props = {
   folder?: string;
+  uploadKey: string;
+  imagesToken: string;
 };
 
 export const UploadButton = (props: Props) => {
@@ -43,6 +45,11 @@ const UploadForm: React.FC<Props> = (props) => {
     const formData = new FormData();
     formData.append('file', file);
     if (props.folder) formData.append('folder', props.folder);
+
+    // Add secret keys
+    formData.append('__key__', props.uploadKey);
+    formData.append('__token__', props.imagesToken);
+    formData.append('__secret__', ''); // Secret key should be left blank
 
     const res = await fetch('/api/upload', {
       method: 'POST',

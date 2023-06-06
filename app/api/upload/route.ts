@@ -1,4 +1,5 @@
 import { cloudinary } from '@/utils/cloudinary';
+import { IMAGES_TOKEN, UPLOAD_KEY } from '@/utils/constants';
 import { NextRequest, NextResponse } from 'next/server';
 import streamifier from 'streamifier';
 
@@ -25,7 +26,15 @@ async function uploadFile(buffer: Buffer, options: UploadOptions = {}) {
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
-    // console.log(formData);
+
+    // Validate the keys
+    const key = formData.get('__key__') as string | null;
+    const token = formData.get('__token__') as string | null;
+    const secret = formData.get('__secret__') as string | null;
+
+    if (key !== UPLOAD_KEY || token !== IMAGES_TOKEN || secret !== '') {
+      return NextResponse.json({ error: 'Invalid key or token.' }, { status: 401 });
+    }
 
     const file = formData.get('file') as Blob | null;
     if (!file) {
