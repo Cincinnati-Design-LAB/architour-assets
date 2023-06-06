@@ -60,7 +60,7 @@ const UploadForm: React.FC<Props> = (props) => {
     // console.log({ data });
 
     router.refresh();
-    if (fileInputRef?.current?.value) fileInputRef?.current.value = '';
+    if (fileInputRef?.current?.value) fileInputRef.current.value = '';
   };
 
   return (
