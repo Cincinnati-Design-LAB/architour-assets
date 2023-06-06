@@ -1,4 +1,4 @@
-import { authOptions } from '@/app/auth/[...nextauth]/route';
+import { authOptions } from '@/utils/auth';
 import { ALLOWED_USER_EMAILS } from '@/utils/constants';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
