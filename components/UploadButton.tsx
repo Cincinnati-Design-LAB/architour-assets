@@ -34,7 +34,7 @@ const UploadForm: React.FC<Props> = (props) => {
     event.preventDefault();
     console.log('Uploading image ...');
 
-    const file = fileInputRef.current?.files ? fileInputRef.current?.files[0] : undefined;
+    const file = fileInputRef?.current?.files ? fileInputRef?.current?.files[0] : undefined;
     if (!file) {
       console.error('File not found');
       return;
@@ -60,7 +60,7 @@ const UploadForm: React.FC<Props> = (props) => {
     // console.log({ data });
 
     router.refresh();
-    if (fileInputRef.current?.value) fileInputRef.current.value = '';
+    if (fileInputRef?.current?.value) fileInputRef?.current.value = '';
   };
 
   return (
