@@ -4,7 +4,8 @@ import { IMAGES_TOKEN, UPLOAD_KEY } from '@/utils/constants';
 import { notFound } from 'next/navigation';
 
 export default async function StackbitModal({ params }: { params: { folder: string } }) {
-  const folder = params.folder;
+  let folder = [params.folder].flat().filter(Boolean).join('/');
+  console.log({ folder });
 
   if (!folder || !folder.length) return notFound();
 
