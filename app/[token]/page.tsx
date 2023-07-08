@@ -1,11 +1,10 @@
-import { PageLayout } from '@/components/PageLayout';
-import { getPaginatedImages } from '@/utils/cloudinary';
-import { IMAGES_TOKEN, UPLOAD_KEY } from '@/utils/constants';
-
-export default async function StackbitModal() {
-  const imagePages = await getPaginatedImages();
-  // const images = imagePages[0].images;
-  const images = imagePages.flatMap((page) => page.images);
-
-  return <PageLayout images={images} imagesToken={IMAGES_TOKEN} uploadKey={UPLOAD_KEY} />;
+export default function TokenLanding() {
+  return (
+    <main>
+      <div className="max-w-4xl py-16 mx-auto text-center">
+        <h1 className="mb-8 text-4xl font-black">Design LAB Assets</h1>
+        <p>Assets can only be accessed through models and documents.</p>
+      </div>
+    </main>
+  );
 }
