@@ -3,12 +3,16 @@ import { getPaginatedImages } from '@/utils/cloudinary';
 import { IMAGES_TOKEN, UPLOAD_KEY } from '@/utils/constants';
 import { notFound } from 'next/navigation';
 
-export default async function StackbitModal({ params }: { params: { folder: string } }) {
-  let folder = [params.folder].flat().filter(Boolean).join('/');
-  console.log({ folder });
+export default async function StackbitModal({
+  params,
+}: {
+  params: { token: string; model: string; slug: string };
+}) {
+  const { token, model, slug } = params;
 
-  if (!folder || !folder.length) return notFound();
+  if (!slug || !slug.length) return notFound();
 
+  const folder = `${model}/${slug}`;
   const imagePages = await getPaginatedImages({ folder });
   // const images = imagePages[0].images;
   const images = imagePages.flatMap((page) => page.images);

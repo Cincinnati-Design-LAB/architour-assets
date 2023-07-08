@@ -33,10 +33,14 @@ type CloudinaryImagePage = {
   images: CloudinaryImage[];
 };
 
+/* ----- Transformer ----- */
+
 function transformImage(image: any): CloudinaryImage {
   const { width, height, public_id, secure_url } = image;
   return { public_id, url: secure_url, width, height };
 }
+
+/* ----- Images ----- */
 
 export async function getPaginatedImages(
   options: { folder?: string } = {},
@@ -66,4 +70,16 @@ export async function getPaginatedImages(
     console.log('ERROR:', error);
     return [];
   }
+}
+
+/* ----- Folders ----- */
+
+type CloudinaryFolder = {
+  name: string;
+  path: string;
+};
+
+export async function getFoldersList(model: string) {
+  const response = await cloudinary.api.sub_folders(model, { max_results: 500 });
+  return response.folders as CloudinaryFolder[];
 }
