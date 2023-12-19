@@ -1,0 +1,6 @@
+export IMAGES_ACCESS_TOKEN="..."
+export UPLOADER_SECRET_KEY="..."
+
+export CLOUDINARY_CLOUD_NAME="..."
+export CLOUDINARY_API_KEY="..."
+export CLOUDINARY_API_SECRET="..."
