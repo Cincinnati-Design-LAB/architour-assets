@@ -91,7 +91,7 @@ export async function getPaginatedImages(
 
 /* ----- Folders ----- */
 
-type CloudinaryFolder = {
+export type CloudinaryFolder = {
   name: string;
   path: string;
 };

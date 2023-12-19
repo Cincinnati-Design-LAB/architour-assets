@@ -1,3 +1,4 @@
+import { FolderSearch } from '@/components/FolderSearch';
 import { getFoldersList } from '@/utils/cloudinary';
 import { notFound } from 'next/navigation';
 
@@ -14,15 +15,7 @@ export default async function StackbitModal({
 
   return (
     <main className="p-4">
-      <ul>
-        {folders.map((folder, index) => (
-          <li key={index} className="block mb-1">
-            <a className="underline" href={`/${token}/${folder.path}`}>
-              {folder.name}
-            </a>
-          </li>
-        ))}
-      </ul>
+      <FolderSearch model={model} imagesToken={token} folders={folders} />
     </main>
   );
 }
