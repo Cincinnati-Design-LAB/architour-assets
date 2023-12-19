@@ -22,7 +22,7 @@ export const PageLayout = (props: Props) => {
 
       <div className="grid grid-cols-4 gap-4">
         {props.images.map((image, index) => (
-          <SelectableImage image={image} key={index} />
+          <SelectableImage image={image} key={index} imagesToken={props.imagesToken} />
         ))}
       </div>
     </main>

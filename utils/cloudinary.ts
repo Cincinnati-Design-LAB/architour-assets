@@ -24,6 +24,12 @@ export type CloudinaryImage = {
   width: number;
   /** Original file height */
   height: number;
+  /** Presentable version of the file */
+  filename: string;
+  /** Date created - used for sorting */
+  created_at: string;
+  /** Name of folder where the image lives. Undefined if in root. */
+  folder?: CloudinaryFolder;
 };
 
 type CloudinaryImagePage = {
@@ -36,8 +42,19 @@ type CloudinaryImagePage = {
 /* ----- Transformer ----- */
 
 function transformImage(image: any): CloudinaryImage {
-  const { width, height, public_id, secure_url } = image;
-  return { public_id, url: secure_url, width, height };
+  const { width, height, public_id, secure_url, created_at, folder } = image;
+  let filename = public_id.split('/').pop(); // Remove folder name
+  const id = filename.split('_').pop();
+  filename = filename.replace(`_${id}`, ''); // Remove id
+  return {
+    created_at,
+    filename,
+    folder: folder.length ? folder : undefined,
+    height,
+    public_id,
+    url: secure_url,
+    width,
+  };
 }
 
 /* ----- Images ----- */

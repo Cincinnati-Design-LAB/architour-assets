@@ -14,6 +14,7 @@
     "@types/node": "20.2.5",
     "@types/react": "18.2.8",
     "@types/react-dom": "18.2.4",
+    "@types/react-portal": "^4.0.7",
     "@types/streamifier": "^0.1.0",
     "@unpic/react": "^0.0.28",
     "autoprefixer": "^10.4.14",
@@ -25,6 +26,7 @@
     "postcss": "^8.4.24",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-portal": "^4.2.2",
     "streamifier": "^0.1.1",
     "tailwindcss": "^3.3.2",
     "typescript": "5.1.3"
