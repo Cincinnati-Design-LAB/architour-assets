@@ -1,9 +1,11 @@
 import { CloudinaryImage } from '@/utils/cloudinary';
+import { Header } from './Header';
 import { SelectableImage } from './SelectableImage';
 import { UploadButton } from './UploadButton';
 
 type Props = {
   images: CloudinaryImage[];
+  model: string;
   folder?: string;
   uploadKey: string;
   imagesToken: string;
@@ -12,6 +14,8 @@ type Props = {
 export const PageLayout = (props: Props) => {
   return (
     <main className="p-4">
+      <Header model={props.model} folder={props.folder} />
+
       <div className="mb-4 text-right">
         <UploadButton
           imagesToken={props.imagesToken}

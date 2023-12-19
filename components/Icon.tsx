@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 
 const IconWrapper: React.FC<PropsWithChildren> = (props) => (
-  <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
     {props.children}
   </svg>
 );
@@ -35,11 +35,21 @@ export const DeleteIcon: React.FC = () => (
   </IconWrapper>
 );
 
+export const CaretRightIcon: React.FC = () => (
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M23.0921 2.09209C25.8816 -0.697365 30.4042 -0.697365 33.1936 2.09209L76.0508 44.9492C78.8402 47.7387 78.8402 52.2613 76.0508 55.0508L33.1936 97.9079C30.4042 100.697 25.8816 100.697 23.0921 97.9079C20.3026 95.1184 20.3026 90.5958 23.0921 87.8064L60.8985 50L23.0921 12.1936C20.3026 9.40416 20.3026 4.88155 23.0921 2.09209Z"
+      fill="currentColor"
+    />
+  </svg>
+);
+
 /* ----- Icon Component ----- */
 
 export const iconComponentMap = {
   'arrow-left': ArrowLeftIcon,
   'arrow-right': ArrowRightIcon,
+  'caret-right': CaretRightIcon,
   delete: DeleteIcon,
 } as const;
 

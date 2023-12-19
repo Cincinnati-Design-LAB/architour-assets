@@ -20,6 +20,12 @@ export default async function StackbitModal({
   if (!images || !images.length) return notFound();
 
   return (
-    <PageLayout images={images} imagesToken={IMAGES_TOKEN} uploadKey={UPLOAD_KEY} folder={folder} />
+    <PageLayout
+      images={images}
+      imagesToken={IMAGES_TOKEN}
+      uploadKey={UPLOAD_KEY}
+      folder={folder}
+      model={model}
+    />
   );
 }
